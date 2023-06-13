@@ -1,6 +1,3 @@
-# API-DauRuang-Fix
-api fix yang dibuat oleh team DauRuang
-
 # This is Bangkit Final Capstone Project by Team C23-PC699
 
 ## DauRuang Application
