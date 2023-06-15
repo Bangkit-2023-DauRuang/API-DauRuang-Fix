@@ -45,6 +45,24 @@ router.get('/orders/:id', async (req, res) => {
   }
 });
 
+//GET (buat dapetin orderan by email) url: http://localhost:3000/order/orders/email/test123@gmail.com
+router.get('/orders/email/:email', async (req, res) => {
+  const email = req.params.email;
+
+  try {
+    let order = await orders.findAll({ where: { email }});
+    if (!order) {
+      res.status(404)
+      .json({ error: 'Order tidak ditemukan' });
+      return;
+    }
+    res.json({data:order});
+  } catch (error) {
+    res.status(500)
+    .json({ error: 'Internal server error' });
+  }
+});
+
 //GET (buat dapetin status delivery tukang pengepul sampah) url: http://localhost:3000/order/orders/1/lacak
 router.get('/orders/:id/lacak', async (req, res) => {
   const id = parseInt(req.params.id);
@@ -100,6 +118,7 @@ router.get('/users/:username/totalpoints', async (req, res) => {
 router.post('/orders', async(req, res) => {
 const schema = {
   username:'string|min: 1',
+  email:'string|min: 1',
   jenis_sampah: 'string|min: 1',
   berat_sampah: 'number|positive',
   lokasi_pengepul: 'string|min: 1',
@@ -115,27 +134,27 @@ if (validate.length){
   .json(validate);
 }
 
-const { username, jenis_sampah, berat_sampah, lokasi_pengepul, lokasi_user, catatan } = req.body;
+const { username, email, jenis_sampah, berat_sampah, lokasi_pengepul, lokasi_user, catatan } = req.body;
 
   // kalkulasi reward points sama hargaPerKg
   let points;
   let hargaPerKg;
 
   switch (jenis_sampah) {
-    case 'Minyak jelantah':
-      points = 10;
+    case 'Minyak':
+      points = 100;
       hargaPerKg = 9500;
       break;
-    case 'Kaleng':
-      points = 5;
+    case 'Logam':
+      points = 150;
       hargaPerKg = 13000;
       break;
-    case 'Paper':
-      points = 2;
+    case 'Kertas':
+      points = 70;
       hargaPerKg = 5000;
       break;
     case 'Organik':
-      points = 3;
+      points = 50;
       hargaPerKg = 3000;
       break;
     default:
@@ -147,6 +166,7 @@ const { username, jenis_sampah, berat_sampah, lokasi_pengepul, lokasi_user, cata
   try {
     const order = await orders.create({
       username,
+      email,
       jenis_sampah,
       hargaPerKg,
       berat_sampah,
@@ -268,6 +288,7 @@ router.put('/orders/:id', async (req, res) => {
 
   const schema = {
     username: 'string|optional',
+    email: 'string|min:1',
     jenis_sampah: 'string|min:1',
     berat_sampah: 'number|positive',
     lokasi_pengepul: 'string|min:1',
@@ -291,6 +312,7 @@ router.put('/orders/:id', async (req, res) => {
 
     // Update order
     order.username = req.body.username;
+    order.email = req.body.email;
     order.jenis_sampah = req.body.jenis_sampah;
     order.berat_sampah = req.body.berat_sampah;
     order.lokasi_pengepul = req.body.lokasi_pengepul;
@@ -299,20 +321,20 @@ router.put('/orders/:id', async (req, res) => {
 
     // Update hargaPerKg and points based on jenis_sampah
     switch (order.jenis_sampah) {
-      case 'Minyak jelantah':
-        order.points = 10;
+      case 'Minyak':
+        order.points = 100;
         order.hargaPerKg = 9500;
         break;
-      case 'Kaleng':
-        order.points = 5;
+      case 'Logam':
+        order.points = 150;
         order.hargaPerKg = 13000;
         break;
-      case 'Paper':
-        order.points = 2;
+      case 'Kertas':
+        order.points = 70;
         order.hargaPerKg = 5000;
         break;
       case 'Organik':
-        order.points = 3;
+        order.points = 50;
         order.hargaPerKg = 3000;
         break;
       default:
