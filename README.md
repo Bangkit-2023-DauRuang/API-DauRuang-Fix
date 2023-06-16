@@ -82,7 +82,7 @@ DauRuang (Ruang Daur Ulang Menghasilkan Uang) We chose this name of "DauRuang" b
 
 ```json
 {
-    "message": "String",
+    "message": "Order kamu berhasil!",
     "data":{
         "status_pemesanan": "String",
         "id": "Integer",
@@ -107,7 +107,7 @@ DauRuang (Ruang Daur Ulang Menghasilkan Uang) We chose this name of "DauRuang" b
 
 ```json
 {
-    "message": "String",
+    "message": "Order kamu berhasil diupdate!",
     "data":{
         "id": "Integer",
         "username": "String",
@@ -132,7 +132,7 @@ DauRuang (Ruang Daur Ulang Menghasilkan Uang) We chose this name of "DauRuang" b
 
 ```json
 {
-    "message": "String"
+    "message": "Order kamu berhasil dihapus"
 }
 ```
 
