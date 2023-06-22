@@ -54,7 +54,7 @@ DauRuang (Ruang Daur Ulang Menghasilkan Uang) We chose this name of "DauRuang" b
 ```
 
 - GET a list of data by email
-- Url: https://.../order/orders/:email
+- Url: https://.../order/orders/email/:email
 
 ```json
 {
